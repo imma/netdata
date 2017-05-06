@@ -6,6 +6,12 @@ function bootstrap {
 
   runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid
 
+  case "$(uname -s)" in
+    Linux)
+      sudo aptitude install -y uuid-dev
+      ;;
+  esac
+
   mkdir -p "$shome/vendor"
   git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
   pushd "$shome/vendor/netdata-src"
