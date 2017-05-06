@@ -1,0 +1,29 @@
+{
+  "version": "2.1",
+  "networks": {
+    "default": {
+      "external": {
+        "name": "ubuntu_default"
+      }
+    }
+  },
+  "services": {
+    "netdata": {
+      "volumes": [
+        "/data:/data",
+        "/config:/config"
+      ],
+      "environment": [
+        "SERVICE_19999_NAME=netdata",
+      ],
+      "expose": [
+        "19999"
+      ],
+      "ports": [
+        "${BLOCK_SSH_PORT}"
+      ],
+      "dns_search": "node.dc1.consul service.dc1.consul",
+      "image": "${BLOCK_REGISTRY}/block:netdata"
+    }
+  }
+}
