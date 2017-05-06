@@ -4,7 +4,7 @@ function bootstrap {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   source "$shome/script/profile"
 
-  runmany 'pkg ensure $1' devel/auto{conf,gen,make}
+  runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid
 
   mkdir -p "$shome/vendor"
   git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
