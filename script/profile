@@ -2,9 +2,10 @@
 
 function _netdata_profile {
   local shome="${_netdata_home:-"$(cd -P -- "$(dirname -- "$BASH_SOURCE")/.." && pwd -P)"}"
-  PATH="$shome/bin:$PATH"
 
   NETDATA_VERSION="1.6.0"
+
+  PATH="$shome/vendor/netdata-${NETDATA_VERSION}/netdata/usr/sbin:$PATH"
 }
 
 _netdata_profile
