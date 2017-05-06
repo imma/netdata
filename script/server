@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+function server {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+  source "$shome/script/profile"
+
+  if [[ "$#" == 0 ]]; then
+    set -- default
+  fi
+
+  case "${1:-}" in
+    default)
+      local pth_config="/config/linkerd-tcp/linkerd-tcp.yaml"
+
+      if [[ -f "$pth_config" ]]; then
+        exec linkerd-tcp "$pth_config"
+      else
+        echo "ERROR: missing $pth_config" 1>&2
+        sleep 10
+      fi
+      ;;
+    *)
+      echo "ERROR: unknown server command: ${1:-/not-supplied/}" 1>&2
+      return 1
+      ;;
+  esac
+}
+
+server "$@"

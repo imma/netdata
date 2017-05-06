@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+function bootstrap {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+  source "$shome/script/profile"
+
+  mkdir -p "$shome/vendor"
+  git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
+  pushd "$shome/vendor/netdata-src"
+  git reset --hard
+  git fetch
+  git checkout "v${NETDATA_VERSION}"
+  ./netdata-installer.sh --dont-wait --dont-start-it --install "$shome/vendor/netdata-${NETDATA_VERSION}"
+  popd
+}
+
+bootstrap
