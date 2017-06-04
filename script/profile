@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function _netdata_profile {
-  local shome="${_netdata_home:-"$(cd -P -- "$(dirname -- "$BASH_SOURCE")/.." && pwd -P)"}"
+  local shome="${_netdata_home:="$(cd -P -- "$(dirname -- "$BASH_SOURCE")/.." && pwd -P)"}"
 
   NETDATA_VERSION="1.6.0"
 
