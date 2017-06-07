@@ -8,7 +8,7 @@ function bootstrap {
 
   case "$(uname -s)" in
     Linux)
-      sudo aptitude install -y uuid-dev
+      sudo aptitude install -y uuid-dev m4
       ;;
   esac
 
