@@ -20,6 +20,7 @@ function bootstrap {
   git checkout "v${NETDATA_VERSION}"
   ./netdata-installer.sh --dont-wait --dont-start-it --install "$shome/vendor/netdata-${NETDATA_VERSION}"
   popd
+  rm -rf "$shome/vendor/netdata-src"
 
   (cd "$shome/bin" && ln -nfs "../vendor/netdata-${NETDATA_VERSION}/netdata/usr/sbin/netdata" "$shome/bin/netdata")
 }
