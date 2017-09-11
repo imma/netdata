@@ -16,14 +16,14 @@ function bootstrap {
     git fetch
     git checkout "v${NETDATA_VERSION}"
     ln -nfs $PKG_HOME/install/include/uuid
-    ./netdata-installer.sh --dont-wait --dont-start-it --install "$shome/vendor/netdata-${NETDATA_VERSION}"
+    ./netdata-installer.sh --dont-wait --dont-start-it --install "$pth_install"
     popd
     rm -rf "$shome/vendor/netdata-src"
 
     cache location archive "$pth_install"
   fi
 
-  (cd "$shome/bin" && ln -nfs "../vendor/netdata-${NETDATA_VERSION}/netdata/usr/sbin/netdata" "$shome/bin/netdata")
+  (cd "$shome/bin" && ln -nfs "$pth_install/netdata/usr/sbin/netdata" "$shome/bin/netdata")
 }
 
 bootstrap
