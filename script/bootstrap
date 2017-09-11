@@ -6,16 +6,22 @@ function bootstrap {
 
   runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid devel/pkgconf devel/m4
 
-  mkdir -p "$shome/vendor"
-  git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
-  pushd "$shome/vendor/netdata-src"
-  git reset --hard
-  git fetch
-  git checkout "v${NETDATA_VERSION}"
-  ln -nfs $PKG_HOME/install/include/uuid
-  ./netdata-installer.sh --dont-wait --dont-start-it --install "$shome/vendor/netdata-${NETDATA_VERSION}"
-  popd
-  rm -rf "$shome/vendor/netdata-src"
+  local pth_install="$shome/vendor/netdata-${NETDATA_VERSION}"
+
+  if ! cache location "$pth_install"; then
+    mkdir -p "$shome/vendor"
+    git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
+    pushd "$shome/vendor/netdata-src"
+    git reset --hard
+    git fetch
+    git checkout "v${NETDATA_VERSION}"
+    ln -nfs $PKG_HOME/install/include/uuid
+    ./netdata-installer.sh --dont-wait --dont-start-it --install "$shome/vendor/netdata-${NETDATA_VERSION}"
+    popd
+    rm -rf "$shome/vendor/netdata-src"
+
+    cache location archive "$pth_install"
+  fi
 
   (cd "$shome/bin" && ln -nfs "../vendor/netdata-${NETDATA_VERSION}/netdata/usr/sbin/netdata" "$shome/bin/netdata")
 }
