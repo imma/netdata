@@ -4,7 +4,7 @@ function bootstrap {
   local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
   source "$shome/script/profile"
 
-  runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid devel/pkgconf devel/m4
+  runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid devel/pkgconf devel/m4 devel/zlib
 
   local pth_install="$shome/vendor/netdata-${NETDATA_VERSION}"
 
