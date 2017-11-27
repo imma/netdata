@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
 
-function bootstrap {
-  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
-  source "$shome/script/profile"
-
-  runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid devel/pkgconf devel/m4
-
-  local pth_install="$shome/vendor/netdata-${NETDATA_VERSION}"
-
-  if ! cache location "$pth_install"; then
-    mkdir -p "$shome/vendor"
+function install_netdata {
     git clone git@github.com:firehol/netdata $shome/vendor/netdata-src || true
     pushd "$shome/vendor/netdata-src"
     git reset --hard
@@ -19,11 +10,27 @@ function bootstrap {
     ./netdata-installer.sh --dont-wait --dont-start-it --install "$pth_install"
     popd
     rm -rf "$shome/vendor/netdata-src"
+}
 
+function main {
+  local shome="$(cd -P -- "${BASH_SOURCE%/*}/.." && pwd -P)"
+  source "$shome/script/profile"
+
+  mkdir -p "$shome/vendor"
+  cd "$shome/vendor"
+
+  set -x
+
+  runmany 'pkg ensure $1' devel/auto{conf,gen,make} devel/libuuid devel/pkgconf devel/m4
+
+  local pth_install="$shome/vendor/netdata-${NETDATA_VERSION}"
+
+  if ! cache location "$pth_install"; then
+    install_netdata
     cache location archive "$pth_install"
   fi
 
   (cd "$shome/bin" && ln -nfs "$pth_install/netdata/usr/sbin/netdata" "$shome/bin/netdata")
 }
 
-bootstrap
+main "$@"
